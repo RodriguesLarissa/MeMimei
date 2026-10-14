@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
 import { SupabaseClientService } from '../supabase/supabase-client.service';
-import { MockEventService } from './mock-event.service';
+import { DEMO_EVENT_SLUG, MockEventService } from './mock-event.service';
 import { GiftEvent } from '../models/event.model';
 import { Gift } from '../models/gift.model';
 
@@ -66,7 +66,9 @@ export class EventRepositoryService {
   private readonly mockEventService = inject(MockEventService);
 
   getEventBySlug(slug: string): Observable<{ event: GiftEvent | undefined; gifts: Gift[] }> {
-    if (!this.supabase.isConfigured()) {
+    // O exemplo da tela inicial é sempre fictício — nunca busca no banco real,
+    // mesmo que alguém publique um evento real com o mesmo slug.
+    if (slug === DEMO_EVENT_SLUG || !this.supabase.isConfigured()) {
       return this.getFromMock(slug);
     }
 

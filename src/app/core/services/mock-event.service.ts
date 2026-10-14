@@ -8,10 +8,13 @@ interface MockEventData {
   gifts: Gift[];
 }
 
+/** Slug fixo do exemplo exibido na tela inicial — sempre fictício, nunca lido do banco real. */
+export const DEMO_EVENT_SLUG = 'cha-de-casa-nova-da-dona-marly';
+
 const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
   event: {
     id: 'evt-001',
-    slug: 'cha-de-casa-nova-da-dona-marly',
+    slug: DEMO_EVENT_SLUG,
     name: 'Chá de Casa Nova da Dona Marly',
     occasionType: 'cha-de-casa-nova',
     hostNames: 'Dona Marly',

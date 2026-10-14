@@ -6,6 +6,7 @@ import { EventService } from '../../../core/services/event.service';
 import { GiftService } from '../../../core/services/gift.service';
 import { OCCASION_TYPES, OccasionType } from '../../../core/models/event.model';
 import { GIFT_CATEGORIES } from '../../../core/models/gift-category';
+import { DEMO_EVENT_SLUG } from '../../../core/services/mock-event.service';
 import { Gift } from '../../../core/models/gift.model';
 import { slugify } from '../../../core/utils/slugify';
 import { UiButton } from '../../../shared/ui/button/button';
@@ -151,6 +152,12 @@ export class EventFormPage {
     };
 
     try {
+      if (raw.slug === DEMO_EVENT_SLUG) {
+        this.errorMessage.set('Esse link é reservado para o exemplo do MeMimei. Escolha outro.');
+        this.isSubmitting.set(false);
+        return;
+      }
+
       const available = await firstValueFrom(this.eventService.isSlugAvailable(raw.slug, this.eventId() ?? undefined));
       if (!available) {
         this.errorMessage.set('Esse link já está em uso. Escolha outro.');
