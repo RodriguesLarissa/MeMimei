@@ -68,6 +68,12 @@
   font-size: var(--fs-xs);
 }
 
+.event-form__hint {
+  color: var(--color-ink-soft);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+}
+
 .event-form__checkbox {
   display: flex;
   align-items: center;
@@ -100,6 +106,7 @@
 
 .event-form__gift-card {
   background: var(--color-terracota-light);
+  border-radius: var(--radius-sm);
 }
 
 .event-form__gift-actions {

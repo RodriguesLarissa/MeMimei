@@ -39,6 +39,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'cozinha',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-002',
@@ -49,6 +50,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'cozinha',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-003',
@@ -59,6 +61,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'eletrodomesticos',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-004',
@@ -69,6 +72,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'eletrodomesticos',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-005',
@@ -80,6 +84,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'moveis',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-006',
@@ -91,6 +96,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'moveis',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-007',
@@ -101,6 +107,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'decoracao',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-008',
@@ -111,6 +118,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'decoracao',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-009',
@@ -121,6 +129,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'decoracao',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
     {
       id: 'gift-010',
@@ -131,6 +140,7 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
       category: 'livre',
       isPublished: true,
       allowsFreeContribution: true,
+      purchaseUrl: null,
     },
   ],
 };

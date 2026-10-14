@@ -18,6 +18,7 @@ interface GiftRow {
   category: string;
   is_published: boolean;
   allows_free_contribution: boolean;
+  purchase_url: string | null;
   sort_order: number;
 }
 
@@ -31,6 +32,7 @@ function toGift(row: GiftRow): Gift {
     category: row.category as Gift['category'],
     isPublished: row.is_published,
     allowsFreeContribution: row.allows_free_contribution,
+    purchaseUrl: row.purchase_url,
   };
 }
 
@@ -42,6 +44,7 @@ const giftInputSchema = z.object({
   category: z.enum(['cozinha', 'moveis', 'decoracao', 'eletrodomesticos', 'livre']),
   isPublished: z.boolean(),
   allowsFreeContribution: z.boolean(),
+  purchaseUrl: z.string().url().nullable(),
 });
 
 function toRow(input: z.infer<typeof giftInputSchema>) {
@@ -53,6 +56,7 @@ function toRow(input: z.infer<typeof giftInputSchema>) {
     category: input.category,
     is_published: input.isPublished,
     allows_free_contribution: input.allowsFreeContribution,
+    purchase_url: input.purchaseUrl,
   };
 }
 

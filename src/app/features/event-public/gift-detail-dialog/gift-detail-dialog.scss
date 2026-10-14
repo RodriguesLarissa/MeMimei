@@ -58,6 +58,16 @@
   color: var(--color-terracota-dark);
 }
 
+.gift-dialog__purchase-link {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-sage-dark);
+
+  &:hover {
+    color: var(--color-terracota-dark);
+  }
+}
+
 .gift-dialog__notice {
   background: var(--color-sage-light);
   color: var(--color-sage-dark);

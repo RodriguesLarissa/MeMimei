@@ -9,4 +9,5 @@ export interface Gift {
   category: GiftCategory;
   isPublished: boolean;
   allowsFreeContribution: boolean;
+  purchaseUrl: string | null;
 }

@@ -12,6 +12,7 @@ const FREE_CONTRIBUTION_GIFT: Gift = {
   category: 'livre',
   isPublished: true,
   allowsFreeContribution: true,
+  purchaseUrl: null,
 };
 
 @Component({

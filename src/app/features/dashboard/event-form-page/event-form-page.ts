@@ -80,6 +80,7 @@ export class EventFormPage {
     category: ['livre' as Gift['category'], Validators.required],
     allowsFreeContribution: [true],
     isPublished: [true],
+    purchaseUrl: ['', Validators.pattern(/^https?:\/\/.+/)],
   });
 
   constructor() {
@@ -191,6 +192,7 @@ export class EventFormPage {
       category: 'livre',
       allowsFreeContribution: true,
       isPublished: true,
+      purchaseUrl: '',
     });
     this.showGiftForm.set(true);
   }
@@ -205,6 +207,7 @@ export class EventFormPage {
       category: gift.category,
       allowsFreeContribution: gift.allowsFreeContribution,
       isPublished: gift.isPublished,
+      purchaseUrl: gift.purchaseUrl ?? '',
     });
     this.showGiftForm.set(true);
   }
@@ -232,6 +235,7 @@ export class EventFormPage {
       category: raw.category,
       isPublished: raw.isPublished,
       allowsFreeContribution: raw.allowsFreeContribution,
+      purchaseUrl: raw.purchaseUrl.trim() === '' ? null : raw.purchaseUrl.trim(),
     };
 
     const editing = this.editingGift();

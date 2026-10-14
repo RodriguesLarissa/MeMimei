@@ -3,7 +3,7 @@ services:
     name: memimei
     runtime: node
     plan: free
-    buildCommand: npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm run serve:ssr:memimei
     envVars:
       - key: NODE_VERSION

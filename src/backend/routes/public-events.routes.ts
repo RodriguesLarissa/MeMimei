@@ -29,6 +29,7 @@ interface GiftRow {
   category: string;
   is_published: boolean;
   allows_free_contribution: boolean;
+  purchase_url: string | null;
 }
 
 function toGiftEvent(row: EventRow): GiftEvent {
@@ -57,6 +58,7 @@ function toGift(row: GiftRow): Gift {
     category: row.category as Gift['category'],
     isPublished: row.is_published,
     allowsFreeContribution: row.allows_free_contribution,
+    purchaseUrl: row.purchase_url,
   };
 }
 

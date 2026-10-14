@@ -57,3 +57,14 @@
   color: var(--color-terracota-dark);
   font-size: var(--fs-sm);
 }
+
+.gift-card__purchase-link {
+  text-align: center;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-ink-soft);
+
+  &:hover {
+    color: var(--color-terracota-dark);
+  }
+}

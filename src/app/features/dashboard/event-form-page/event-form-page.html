@@ -126,6 +126,22 @@
                 </select>
               </label>
 
+              <label class="event-form__field">
+                <span>Link para comprar o produto (opcional)</span>
+                <input
+                  type="url"
+                  formControlName="purchaseUrl"
+                  placeholder="https://www.lojaonline.com.br/produto"
+                />
+                @if (giftForm.controls.purchaseUrl.touched && giftForm.controls.purchaseUrl.invalid) {
+                  <span class="event-form__error">Informe um link válido, começando com http:// ou https://</span>
+                }
+                <span class="event-form__hint">
+                  Se o convidado preferir comprar o produto direto em vez de contribuir com dinheiro, esse link
+                  aparece como alternativa na página do presente.
+                </span>
+              </label>
+
               <label class="event-form__checkbox">
                 <input type="checkbox" formControlName="isPublished" />
                 <span>Publicado (visível para os convidados)</span>

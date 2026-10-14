@@ -17,6 +17,17 @@
         <span class="gift-card__amount">valor livre</span>
       }
       <ui-button variant="primary" [fullWidth]="true" (click)="choose()">Quero presentear</ui-button>
+
+      @if (gift().purchaseUrl) {
+        <a
+          class="gift-card__purchase-link"
+          [href]="gift().purchaseUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Prefiro comprar no site →
+        </a>
+      }
     </div>
   </div>
 </ui-card>

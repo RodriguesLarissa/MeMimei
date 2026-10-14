@@ -10,6 +10,11 @@
       @if (gift().description) {
         <p class="gift-dialog__description">{{ gift().description }}</p>
       }
+      @if (gift().purchaseUrl) {
+        <a class="gift-dialog__purchase-link" [href]="gift().purchaseUrl" target="_blank" rel="noopener noreferrer">
+          Prefere comprar o produto você mesmo? Acesse aqui →
+        </a>
+      }
     }
 
     @if (step() === 'form') {
