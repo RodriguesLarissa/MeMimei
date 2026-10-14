@@ -32,6 +32,9 @@ function translateAuthError(message: string): string {
   if (normalized.includes('password should be at least')) {
     return 'A senha precisa ter pelo menos 6 caracteres.';
   }
+  if (normalized.includes('rate limit')) {
+    return 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.';
+  }
   return 'Não foi possível concluir a ação. Tente novamente em instantes.';
 }
 
