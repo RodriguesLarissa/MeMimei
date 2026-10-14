@@ -24,8 +24,9 @@ export class RegisterPage {
 
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
   readonly isConfigured = this.authService.isConfigured();
+  readonly showPassword = signal(false);
+  readonly showConfirmPassword = signal(false);
 
   readonly form = this.fb.nonNullable.group(
     {
@@ -45,7 +46,6 @@ export class RegisterPage {
 
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
-    this.successMessage.set(null);
 
     const { displayName, email, password } = this.form.getRawValue();
     const result = await this.authService.signUp(email, password, displayName);
@@ -53,8 +53,7 @@ export class RegisterPage {
     this.isSubmitting.set(false);
 
     if (result.success) {
-      this.successMessage.set('Conta criada! Verifique seu e-mail para confirmar o cadastro antes de entrar.');
-      this.form.reset();
+      this.router.navigate(['/entrar'], { queryParams: { aviso: 'confirme-email' } });
     } else {
       this.errorMessage.set(result.errorMessage);
     }

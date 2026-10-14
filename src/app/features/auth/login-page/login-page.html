@@ -5,6 +5,10 @@
 
     @if (errorMessage()) {
       <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
+    } @else if (showEmailConfirmationNotice) {
+      <ui-alert variant="success">
+        Conta criada! Verifique seu e-mail para confirmar o cadastro antes de entrar.
+      </ui-alert>
     } @else if (!isConfigured) {
       <ui-alert variant="info">
         O MeMimei ainda não está conectado a um banco de dados. Essa funcionalidade estará disponível em breve.
@@ -22,7 +26,23 @@
 
       <label class="auth-page__field">
         <span>Senha</span>
-        <input type="password" formControlName="password" autocomplete="current-password" placeholder="••••••••" />
+        <div class="auth-page__password-wrapper">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            class="auth-page__password-toggle"
+            (click)="showPassword.set(!showPassword())"
+            [title]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+            [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ showPassword() ? '🐵' : '🙈' }}
+          </button>
+        </div>
         @if (form.controls.password.touched && form.controls.password.invalid) {
           <span class="auth-page__error">Informe sua senha.</span>
         }

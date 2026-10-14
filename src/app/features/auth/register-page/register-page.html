@@ -5,8 +5,6 @@
 
     @if (errorMessage()) {
       <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
-    } @else if (successMessage()) {
-      <ui-alert variant="success">{{ successMessage() }}</ui-alert>
     } @else if (!isConfigured) {
       <ui-alert variant="info">
         O MeMimei ainda não está conectado a um banco de dados. Essa funcionalidade estará disponível em breve.
@@ -32,7 +30,23 @@
 
       <label class="auth-page__field">
         <span>Senha</span>
-        <input type="password" formControlName="password" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" />
+        <div class="auth-page__password-wrapper">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="Mínimo de 6 caracteres"
+          />
+          <button
+            type="button"
+            class="auth-page__password-toggle"
+            (click)="showPassword.set(!showPassword())"
+            [title]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+            [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ showPassword() ? '🐵' : '🙈' }}
+          </button>
+        </div>
         @if (form.controls.password.touched && form.controls.password.invalid) {
           <span class="auth-page__error">A senha precisa ter pelo menos 6 caracteres.</span>
         }
@@ -40,7 +54,23 @@
 
       <label class="auth-page__field">
         <span>Confirmar senha</span>
-        <input type="password" formControlName="confirmPassword" autocomplete="new-password" placeholder="Repita a senha" />
+        <div class="auth-page__password-wrapper">
+          <input
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Repita a senha"
+          />
+          <button
+            type="button"
+            class="auth-page__password-toggle"
+            (click)="showConfirmPassword.set(!showConfirmPassword())"
+            [title]="showConfirmPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+            [attr.aria-label]="showConfirmPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            {{ showConfirmPassword() ? '🐵' : '🙈' }}
+          </button>
+        </div>
         @if (form.controls.confirmPassword.touched && form.errors?.['passwordsMismatch']) {
           <span class="auth-page__error">As senhas não coincidem.</span>
         }

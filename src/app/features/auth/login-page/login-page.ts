@@ -20,6 +20,8 @@ export class LoginPage {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly isConfigured = this.authService.isConfigured();
+  readonly showPassword = signal(false);
+  readonly showEmailConfirmationNotice = this.route.snapshot.queryParamMap.get('aviso') === 'confirme-email';
 
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],

@@ -1,0 +1,26 @@
+<div class="image-upload">
+  <span class="image-upload__label">{{ label() }}</span>
+
+  <div class="image-upload__body">
+    @if (imageUrl()) {
+      <img [src]="imageUrl()" [alt]="label()" class="image-upload__preview" />
+    } @else {
+      <div class="image-upload__placeholder" aria-hidden="true">🖼️</div>
+    }
+
+    <div class="image-upload__actions">
+      <label class="image-upload__trigger">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+        <span>{{ uploading() ? 'Enviando...' : imageUrl() ? 'Trocar foto' : 'Escolher foto' }}</span>
+      </label>
+
+      @if (imageUrl()) {
+        <button type="button" class="image-upload__remove" (click)="remove()">Remover</button>
+      }
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <span class="image-upload__error">{{ errorMessage() }}</span>
+  }
+</div>

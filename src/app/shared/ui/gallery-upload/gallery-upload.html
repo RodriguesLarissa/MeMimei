@@ -1,0 +1,21 @@
+<div class="gallery-upload">
+  <span class="gallery-upload__label">{{ label() }}</span>
+
+  <div class="gallery-upload__grid">
+    @for (url of imageUrls(); track url; let i = $index) {
+      <div class="gallery-upload__item">
+        <img [src]="url" alt="Foto da galeria" />
+        <button type="button" class="gallery-upload__remove" (click)="remove(i)" aria-label="Remover foto">✕</button>
+      </div>
+    }
+
+    <label class="gallery-upload__add">
+      <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />
+      <span>{{ uploading() ? 'Enviando...' : '+ Adicionar fotos' }}</span>
+    </label>
+  </div>
+
+  @if (errorMessage()) {
+    <span class="gallery-upload__error">{{ errorMessage() }}</span>
+  }
+</div>

@@ -15,6 +15,8 @@ import { UiAlert } from '../../../shared/ui/alert/alert';
 import { UiLoadingSpinner } from '../../../shared/ui/loading-spinner/loading-spinner';
 import { UiEmptyState } from '../../../shared/ui/empty-state/empty-state';
 import { GiftRow } from '../components/gift-row/gift-row';
+import { ImageUpload } from '../../../shared/ui/image-upload/image-upload';
+import { GalleryUpload } from '../../../shared/ui/gallery-upload/gallery-upload';
 
 @Component({
   selector: 'app-event-form-page',
@@ -27,6 +29,8 @@ import { GiftRow } from '../components/gift-row/gift-row';
     UiLoadingSpinner,
     UiEmptyState,
     GiftRow,
+    ImageUpload,
+    GalleryUpload,
   ],
   templateUrl: './event-form-page.html',
   styleUrl: './event-form-page.scss',
@@ -49,10 +53,14 @@ export class EventFormPage {
   readonly errorMessage = signal<string | null>(null);
   readonly successMessage = signal<string | null>(null);
 
+  readonly coverImageUrl = signal('');
+  readonly galleryImageUrls = signal<string[]>([]);
+
   readonly gifts = signal<Gift[]>([]);
   readonly loadingGifts = signal(false);
   readonly editingGift = signal<Gift | null>(null);
   readonly showGiftForm = signal(false);
+  readonly giftImageUrl = signal('');
 
   readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -60,8 +68,6 @@ export class EventFormPage {
     hostNames: ['', Validators.required],
     eventDate: [''],
     welcomeMessage: ['', Validators.required],
-    coverImageUrl: [''],
-    galleryImageUrls: [''],
     themeColor: ['#C96A4B'],
     slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9]+(-[a-z0-9]+)*$/)]],
     isPublished: [false],
@@ -70,7 +76,6 @@ export class EventFormPage {
   readonly giftForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     description: [''],
-    imageUrl: [''],
     suggestedAmount: [''],
     category: ['livre' as Gift['category'], Validators.required],
     allowsFreeContribution: [true],
@@ -100,14 +105,15 @@ export class EventFormPage {
       return;
     }
 
+    this.coverImageUrl.set(event.coverImageUrl);
+    this.galleryImageUrls.set(event.galleryImageUrls);
+
     this.form.setValue({
       name: event.name,
       occasionType: event.occasionType,
       hostNames: event.hostNames,
       eventDate: event.eventDate ?? '',
       welcomeMessage: event.welcomeMessage,
-      coverImageUrl: event.coverImageUrl,
-      galleryImageUrls: event.galleryImageUrls.join('\n'),
       themeColor: event.themeColor || '#C96A4B',
       slug: event.slug,
       isPublished: event.isPublished,
@@ -141,11 +147,8 @@ export class EventFormPage {
       hostNames: raw.hostNames,
       eventDate: raw.eventDate || null,
       welcomeMessage: raw.welcomeMessage,
-      coverImageUrl: raw.coverImageUrl,
-      galleryImageUrls: raw.galleryImageUrls
-        .split('\n')
-        .map((url) => url.trim())
-        .filter(Boolean),
+      coverImageUrl: this.coverImageUrl(),
+      galleryImageUrls: this.galleryImageUrls(),
       themeColor: raw.themeColor,
       slug: raw.slug,
       isPublished: raw.isPublished,
@@ -170,7 +173,7 @@ export class EventFormPage {
         this.successMessage.set('Evento atualizado com sucesso!');
       } else {
         const created = await firstValueFrom(this.eventService.create(input));
-        this.router.navigate(['/painel/eventos', created.id]);
+        this.router.navigate(['/e', created.slug]);
         return;
       }
     } catch {
@@ -182,10 +185,10 @@ export class EventFormPage {
 
   openNewGiftForm(): void {
     this.editingGift.set(null);
+    this.giftImageUrl.set('');
     this.giftForm.reset({
       name: '',
       description: '',
-      imageUrl: '',
       suggestedAmount: '',
       category: 'livre',
       allowsFreeContribution: true,
@@ -196,10 +199,10 @@ export class EventFormPage {
 
   openEditGiftForm(gift: Gift): void {
     this.editingGift.set(gift);
+    this.giftImageUrl.set(gift.imageUrl);
     this.giftForm.setValue({
       name: gift.name,
       description: gift.description,
-      imageUrl: gift.imageUrl,
       suggestedAmount: gift.suggestedAmount === null ? '' : String(gift.suggestedAmount),
       category: gift.category,
       allowsFreeContribution: gift.allowsFreeContribution,
@@ -226,7 +229,7 @@ export class EventFormPage {
     const input = {
       name: raw.name,
       description: raw.description,
-      imageUrl: raw.imageUrl,
+      imageUrl: this.giftImageUrl(),
       suggestedAmount: raw.suggestedAmount.trim() === '' ? null : Number(raw.suggestedAmount),
       category: raw.category,
       isPublished: raw.isPublished,

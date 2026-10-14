@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
+import { guestGuard } from './core/auth/guest.guard';
 
 export const routes: Routes = [
   {
@@ -16,16 +17,19 @@ export const routes: Routes = [
   {
     path: 'entrar',
     title: 'MeMimei — Entrar',
+    canActivate: [guestGuard],
     loadComponent: () => import('./features/auth/login-page/login-page').then((m) => m.LoginPage),
   },
   {
     path: 'cadastro',
     title: 'MeMimei — Criar conta',
+    canActivate: [guestGuard],
     loadComponent: () => import('./features/auth/register-page/register-page').then((m) => m.RegisterPage),
   },
   {
     path: 'recuperar-senha',
     title: 'MeMimei — Recuperar senha',
+    canActivate: [guestGuard],
     loadComponent: () =>
       import('./features/auth/forgot-password-page/forgot-password-page').then((m) => m.ForgotPasswordPage),
   },

@@ -44,15 +44,17 @@
           <textarea formControlName="welcomeMessage" rows="4" placeholder="Conte um pouco sobre o seu evento..."></textarea>
         </label>
 
-        <label class="event-form__field">
-          <span>URL da foto de capa</span>
-          <input type="text" formControlName="coverImageUrl" placeholder="https://..." />
-        </label>
+        <app-image-upload
+          label="Foto de capa"
+          [imageUrl]="coverImageUrl()"
+          (imageUrlChange)="coverImageUrl.set($event)"
+        />
 
-        <label class="event-form__field">
-          <span>URLs da galeria de fotos (uma por linha)</span>
-          <textarea formControlName="galleryImageUrls" rows="3" placeholder="Uma URL por linha"></textarea>
-        </label>
+        <app-gallery-upload
+          label="Galeria de fotos"
+          [imageUrls]="galleryImageUrls()"
+          (imageUrlsChange)="galleryImageUrls.set($event)"
+        />
 
         <label class="event-form__field">
           <span>Cor do tema</span>
@@ -98,10 +100,11 @@
                 <textarea formControlName="description" rows="2"></textarea>
               </label>
 
-              <label class="event-form__field">
-                <span>URL da imagem</span>
-                <input type="text" formControlName="imageUrl" placeholder="https://..." />
-              </label>
+              <app-image-upload
+                label="Foto do presente"
+                [imageUrl]="giftImageUrl()"
+                (imageUrlChange)="giftImageUrl.set($event)"
+              />
 
               <label class="event-form__field">
                 <span>Valor sugerido (deixe em branco para valor livre)</span>
