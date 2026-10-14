@@ -1,0 +1,22 @@
+<div class="category-filter" role="group" aria-label="Filtrar presentes por categoria">
+  <button
+    type="button"
+    class="category-filter__chip"
+    [class.category-filter__chip--active]="selectedCategory() === 'todos'"
+    (click)="select('todos')"
+  >
+    Todos
+  </button>
+
+  @for (category of categories; track category.id) {
+    <button
+      type="button"
+      class="category-filter__chip"
+      [class.category-filter__chip--active]="selectedCategory() === category.id"
+      (click)="select(category.id)"
+    >
+      <span aria-hidden="true">{{ category.icon }}</span>
+      {{ category.label }}
+    </button>
+  }
+</div>

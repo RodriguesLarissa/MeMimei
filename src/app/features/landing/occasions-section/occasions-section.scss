@@ -1,0 +1,58 @@
+.occasions {
+  position: relative;
+  padding-block: var(--space-2xl);
+}
+
+.occasions__title {
+  font-size: var(--fs-xl);
+  text-align: center;
+}
+
+.occasions__subtitle {
+  text-align: center;
+  color: var(--color-ink-soft);
+  margin-top: var(--space-xs);
+}
+
+.occasions__grid {
+  margin-top: var(--space-xl);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.occasions__card {
+  background: var(--surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  text-align: center;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  h3 {
+    font-size: var(--fs-base);
+    margin-top: var(--space-xs);
+  }
+
+  p {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-soft);
+    margin-top: var(--space-2xs);
+  }
+}
+
+.occasions__icon {
+  font-size: 2.25rem;
+  display: block;
+}
+
+@media (min-width: 720px) {
+  .occasions__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

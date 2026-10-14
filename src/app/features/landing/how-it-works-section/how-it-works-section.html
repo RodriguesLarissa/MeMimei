@@ -1,0 +1,18 @@
+<section class="how-it-works">
+  <span class="scroll-anchor" id="como-funciona"></span>
+  <div class="container">
+    <h2 class="how-it-works__title">Como funciona</h2>
+    <p class="how-it-works__subtitle">Em poucos passos, sua lista está pronta para ser compartilhada.</p>
+
+    <ol class="how-it-works__grid">
+      @for (step of steps; track step.number) {
+        <li class="how-it-works__step">
+          <span class="how-it-works__icon" aria-hidden="true">{{ step.icon }}</span>
+          <span class="how-it-works__number">Passo {{ step.number }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

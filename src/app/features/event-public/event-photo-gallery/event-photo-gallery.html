@@ -1,0 +1,9 @@
+<section class="photo-gallery" aria-label="Fotos do evento">
+  <ul class="photo-gallery__list">
+    @for (url of imageUrls(); track url) {
+      <li>
+        <img [src]="url" alt="Foto do evento" loading="lazy" />
+      </li>
+    }
+  </ul>
+</section>

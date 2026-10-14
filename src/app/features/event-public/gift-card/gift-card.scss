@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+}
+
+.gift-card__image-fallback {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: var(--color-terracota-light);
+}
+
+.gift-card__body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  flex: 1;
+
+  h3 {
+    font-size: var(--fs-base);
+    margin-top: var(--space-2xs);
+  }
+}
+
+.gift-card__description {
+  color: var(--color-ink-soft);
+  font-size: var(--fs-sm);
+  flex: 1;
+}
+
+.gift-card__footer {
+  margin-top: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-xs);
+}
+
+.gift-card__amount {
+  font-weight: 700;
+  color: var(--color-terracota-dark);
+  font-size: var(--fs-sm);
+}

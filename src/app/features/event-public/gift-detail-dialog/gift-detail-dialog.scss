@@ -1,0 +1,77 @@
+.gift-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(53, 46, 42, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  padding: 0;
+}
+
+.gift-dialog {
+  position: relative;
+  background: var(--surface-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+
+  h2 {
+    font-size: var(--fs-lg);
+  }
+}
+
+.gift-dialog__close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  border: none;
+  background: var(--color-border);
+  color: var(--color-ink);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.gift-dialog__description {
+  color: var(--color-ink-soft);
+}
+
+.gift-dialog__amount {
+  font-weight: 700;
+  color: var(--color-terracota-dark);
+}
+
+.gift-dialog__notice {
+  background: var(--color-sage-light);
+  color: var(--color-sage-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 640px) {
+  .gift-dialog__overlay {
+    align-items: center;
+  }
+
+  .gift-dialog {
+    border-radius: var(--radius-lg);
+  }
+}

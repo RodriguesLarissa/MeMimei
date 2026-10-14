@@ -1,0 +1,28 @@
+.legal-page {
+  max-width: var(--max-width-narrow);
+  padding-block: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  h1 {
+    font-size: var(--fs-2xl);
+  }
+
+  h2 {
+    font-size: var(--fs-md);
+    margin-top: var(--space-md);
+  }
+
+  p {
+    color: var(--color-ink-soft);
+  }
+}
+
+.legal-page__notice {
+  background: var(--color-sage-light);
+  color: var(--color-sage-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-size: var(--fs-sm);
+}

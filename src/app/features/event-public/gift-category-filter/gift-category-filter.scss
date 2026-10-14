@@ -1,0 +1,31 @@
+.category-filter {
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  padding-bottom: var(--space-2xs);
+}
+
+.category-filter__chip {
+  flex: 0 0 auto;
+  border: 1.5px solid var(--color-border);
+  background: var(--surface-card);
+  color: var(--color-ink-soft);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 40px;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+
+  &--active {
+    background: var(--color-terracota);
+    border-color: var(--color-terracota);
+    color: var(--color-white);
+  }
+
+  &:hover:not(&--active) {
+    border-color: var(--color-terracota);
+    color: var(--color-terracota-dark);
+  }
+}

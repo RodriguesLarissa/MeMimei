@@ -1,0 +1,22 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  background: var(--color-border);
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+
+  &--terracota {
+    background: var(--color-terracota-light);
+    color: var(--color-terracota-dark);
+  }
+
+  &--sage {
+    background: var(--color-sage-light);
+    color: var(--color-sage-dark);
+  }
+}

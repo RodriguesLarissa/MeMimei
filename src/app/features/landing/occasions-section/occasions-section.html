@@ -1,0 +1,17 @@
+<section class="occasions">
+  <span class="scroll-anchor" id="ocasioes"></span>
+  <div class="container">
+    <h2 class="occasions__title">Para cada momento especial</h2>
+    <p class="occasions__subtitle">O MeMimei se adapta à sua ocasião.</p>
+
+    <div class="occasions__grid">
+      @for (occasion of occasions; track occasion.title) {
+        <article class="occasions__card">
+          <span class="occasions__icon" aria-hidden="true">{{ occasion.icon }}</span>
+          <h3>{{ occasion.title }}</h3>
+          <p>{{ occasion.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

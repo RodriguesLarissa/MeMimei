@@ -1,0 +1,29 @@
+.free-contribution {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+  gap: var(--space-md);
+  background: var(--color-terracota-light);
+  border-color: transparent;
+  border-radius: var(--radius-md);
+}
+
+.free-contribution__icon {
+  align-self: center;
+  font-size: 2rem;
+}
+
+.free-contribution__text {
+  margin-bottom: 2vh;
+
+  h3 {
+    font-size: var(--fs-md);
+  }
+
+  p {
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-soft);
+    font-size: var(--fs-sm);
+  }
+}

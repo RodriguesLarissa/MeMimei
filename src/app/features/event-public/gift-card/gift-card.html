@@ -1,0 +1,22 @@
+<ui-card [padded]="false" class="gift-card">
+  @if (gift().imageUrl) {
+    <img [src]="gift().imageUrl" [alt]="gift().name" loading="lazy" />
+  } @else {
+    <div class="gift-card__image-fallback" aria-hidden="true">💛</div>
+  }
+
+  <div class="gift-card__body">
+    <ui-badge tone="sage">{{ categoryLabel(gift().category) }}</ui-badge>
+    <h3>{{ gift().name }}</h3>
+    <p class="gift-card__description">{{ gift().description }}</p>
+
+    <div class="gift-card__footer">
+      @if (gift().suggestedAmount !== null) {
+        <span class="gift-card__amount">a partir de R$ {{ gift().suggestedAmount }}</span>
+      } @else {
+        <span class="gift-card__amount">valor livre</span>
+      }
+      <ui-button variant="primary" [fullWidth]="true" (click)="choose()">Quero presentear</ui-button>
+    </div>
+  </div>
+</ui-card>

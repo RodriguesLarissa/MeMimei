@@ -1,0 +1,49 @@
+@if (loading()) {
+  <ui-loading-spinner label="Carregando a página do evento..." />
+} @else if (!event()) {
+  <div class="container event-public-page__not-found">
+    <ui-empty-state
+      icon="🔍"
+      title="Não encontramos essa página"
+      description="O link pode estar incorreto ou o evento ainda não foi publicado."
+    />
+    <ui-button variant="secondary" routerLink="/">Voltar para o início</ui-button>
+  </div>
+} @else {
+  @let currentEvent = event()!;
+
+  <app-event-cover-hero [event]="currentEvent" />
+
+  <div class="container event-public-page__body">
+    <app-share-whatsapp-button [event]="currentEvent" />
+
+    @if (currentEvent.galleryImageUrls.length > 0) {
+      <app-event-photo-gallery [imageUrls]="currentEvent.galleryImageUrls" />
+    }
+
+    <section class="event-public-page__gifts" aria-labelledby="lista-de-presentes">
+      <h2 id="lista-de-presentes">Lista de presentes</h2>
+
+      <app-gift-category-filter
+        [selectedCategory]="selectedCategory()"
+        (categoryChange)="onCategoryChange($event)"
+      />
+
+      @if (filteredGifts().length > 0) {
+        <app-gift-grid [gifts]="filteredGifts()" (giftSelected)="onGiftSelected($event)" />
+      } @else {
+        <ui-empty-state
+          icon="🎁"
+          title="Nenhum presente nesta categoria"
+          description="Escolha outra categoria para ver mais opções."
+        />
+      }
+    </section>
+
+    <app-free-contribution-card (contribute)="onGiftSelected($event)" />
+  </div>
+
+  @if (selectedGift(); as gift) {
+    <app-gift-detail-dialog [gift]="gift" (close)="closeDialog()" />
+  }
+}

@@ -1,0 +1,15 @@
+<section class="faq">
+  <span class="scroll-anchor" id="faq"></span>
+  <div class="container container--narrow">
+    <h2 class="faq__title">Perguntas frequentes</h2>
+
+    <div class="faq__list">
+      @for (item of items; track item.question) {
+        <details class="faq__item">
+          <summary>{{ item.question }}</summary>
+          <p>{{ item.answer }}</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>

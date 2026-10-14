@@ -1,0 +1,22 @@
+.photo-gallery__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-2xs);
+
+  li {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+}

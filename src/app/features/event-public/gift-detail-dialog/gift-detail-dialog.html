@@ -1,0 +1,23 @@
+<div class="gift-dialog__overlay" (click)="close.emit()">
+  <div class="gift-dialog" role="dialog" aria-modal="true" [attr.aria-label]="gift().name" (click)="$event.stopPropagation()">
+    <button type="button" class="gift-dialog__close" (click)="close.emit()" aria-label="Fechar">✕</button>
+
+    @if (gift().imageUrl) {
+      <img [src]="gift().imageUrl" [alt]="gift().name" />
+    }
+
+    <h2>{{ gift().name }}</h2>
+    <p class="gift-dialog__description">{{ gift().description }}</p>
+
+    @if (gift().suggestedAmount !== null) {
+      <p class="gift-dialog__amount">Valor sugerido: R$ {{ gift().suggestedAmount }}</p>
+    }
+
+    <div class="gift-dialog__notice">
+      <strong>Em breve:</strong> o fluxo de contribuição e pagamento via Pix chega na próxima etapa do MeMimei.
+      Por enquanto, esta é só uma prévia de como será a experiência.
+    </div>
+
+    <ui-button variant="primary" [fullWidth]="true" (click)="close.emit()">Entendi</ui-button>
+  </div>
+</div>

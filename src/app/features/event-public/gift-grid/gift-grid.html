@@ -1,0 +1,5 @@
+<div class="gift-grid">
+  @for (gift of gifts(); track gift.id) {
+    <app-gift-card [gift]="gift" (selected)="giftSelected.emit($event)" />
+  }
+</div>

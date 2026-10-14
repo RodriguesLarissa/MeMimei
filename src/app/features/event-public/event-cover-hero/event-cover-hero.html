@@ -1,0 +1,14 @@
+<section class="event-cover">
+  <div class="event-cover__image">
+    <img [src]="event().coverImageUrl" [alt]="'Capa do evento ' + event().name" />
+  </div>
+
+  <div class="container event-cover__content">
+    @if (formattedDate()) {
+      <span class="event-cover__date">{{ formattedDate() }}</span>
+    }
+    <h1>{{ event().name }}</h1>
+    <p class="event-cover__host">com muito carinho, {{ event().hostNames }}</p>
+    <p class="event-cover__message">{{ event().welcomeMessage }}</p>
+  </div>
+</section>

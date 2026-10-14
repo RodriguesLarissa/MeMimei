@@ -1,0 +1,27 @@
+<section class="demo-preview">
+  <div class="container">
+    <h2 class="demo-preview__title">Veja como fica sua lista</h2>
+    <p class="demo-preview__subtitle">
+      Cada presente representa uma contribuição em dinheiro — simples de escolher, fácil de oferecer.
+    </p>
+
+    <div class="demo-preview__grid">
+      @for (gift of previewGifts; track gift.name) {
+        <ui-card [padded]="false" class="demo-preview__card">
+          <img [src]="gift.imageUrl" [alt]="gift.name" loading="lazy" />
+          <div class="demo-preview__card-body">
+            <ui-badge tone="sage">{{ gift.categoryLabel }}</ui-badge>
+            <h3>{{ gift.name }}</h3>
+            <p class="demo-preview__amount">a partir de R$ {{ gift.suggestedAmount }}</p>
+          </div>
+        </ui-card>
+      }
+    </div>
+
+    <div class="demo-preview__cta">
+      <ui-button variant="secondary" [routerLink]="['/e/cha-de-casa-nova-da-dona-marly']">
+        Ver a página completa de exemplo
+      </ui-button>
+    </div>
+  </div>
+</section>

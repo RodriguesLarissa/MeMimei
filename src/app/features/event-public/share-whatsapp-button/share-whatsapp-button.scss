@@ -1,0 +1,18 @@
+.share-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  align-self: flex-start;
+  background: var(--color-sage);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--color-sage-dark);
+  }
+}
