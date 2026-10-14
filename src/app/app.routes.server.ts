@@ -14,8 +14,22 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    // Busca dados via HttpClient (nosso backend) logo no carregamento — sem uma origem
+    // absoluta disponível durante o SSR, essas rotas são renderizadas só no navegador.
     path: 'e/:slug',
-    renderMode: RenderMode.Server,
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'painel',
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'painel/eventos/novo',
+    renderMode: RenderMode.Client,
+  },
+  {
+    path: 'painel/eventos/:id',
+    renderMode: RenderMode.Client,
   },
   {
     path: '**',

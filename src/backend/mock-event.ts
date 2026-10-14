@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
-import { GiftEvent } from '../models/event.model';
-import { Gift } from '../models/gift.model';
+import { GiftEvent } from '../app/core/models/event.model';
+import { Gift } from '../app/core/models/gift.model';
 
 interface MockEventData {
   event: GiftEvent;
   gifts: Gift[];
 }
 
-/** Slug fixo do exemplo exibido na tela inicial — sempre fictício, nunca lido do banco real. */
+/** Slug fixo do exemplo exibido na tela inicial — sempre fictício, nunca lido do Supabase. */
 export const DEMO_EVENT_SLUG = 'cha-de-casa-nova-da-dona-marly';
 
 const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
@@ -137,19 +135,6 @@ const CHA_DE_CASA_NOVA_DONA_MARLY: MockEventData = {
   ],
 };
 
-const MOCK_EVENTS: MockEventData[] = [CHA_DE_CASA_NOVA_DONA_MARLY];
-
-@Injectable({ providedIn: 'root' })
-export class MockEventService {
-  private static readonly SIMULATED_LATENCY_MS = 450;
-
-  getEventBySlug(slug: string): Observable<GiftEvent | undefined> {
-    const match = MOCK_EVENTS.find((entry) => entry.event.slug === slug);
-    return of(match?.event).pipe(delay(MockEventService.SIMULATED_LATENCY_MS));
-  }
-
-  getGiftsByEventId(eventId: string): Observable<Gift[]> {
-    const match = MOCK_EVENTS.find((entry) => entry.event.id === eventId);
-    return of(match?.gifts ?? []).pipe(delay(MockEventService.SIMULATED_LATENCY_MS));
-  }
+export function getMockEventBySlug(slug: string): MockEventData | undefined {
+  return slug === DEMO_EVENT_SLUG ? CHA_DE_CASA_NOVA_DONA_MARLY : undefined;
 }

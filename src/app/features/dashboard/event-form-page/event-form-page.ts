@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -6,7 +7,6 @@ import { EventService } from '../../../core/services/event.service';
 import { GiftService } from '../../../core/services/gift.service';
 import { OCCASION_TYPES, OccasionType } from '../../../core/models/event.model';
 import { GIFT_CATEGORIES } from '../../../core/models/gift-category';
-import { DEMO_EVENT_SLUG } from '../../../core/services/mock-event.service';
 import { Gift } from '../../../core/models/gift.model';
 import { slugify } from '../../../core/utils/slugify';
 import { UiButton } from '../../../shared/ui/button/button';
@@ -155,12 +155,6 @@ export class EventFormPage {
     };
 
     try {
-      if (raw.slug === DEMO_EVENT_SLUG) {
-        this.errorMessage.set('Esse link é reservado para o exemplo do MeMimei. Escolha outro.');
-        this.isSubmitting.set(false);
-        return;
-      }
-
       const available = await firstValueFrom(this.eventService.isSlugAvailable(raw.slug, this.eventId() ?? undefined));
       if (!available) {
         this.errorMessage.set('Esse link já está em uso. Escolha outro.');
@@ -176,8 +170,12 @@ export class EventFormPage {
         this.router.navigate(['/e', created.slug]);
         return;
       }
-    } catch {
-      this.errorMessage.set('Não foi possível salvar o evento. Tente novamente.');
+    } catch (error) {
+      const message =
+        error instanceof HttpErrorResponse && typeof error.error?.error === 'string'
+          ? error.error.error
+          : 'Não foi possível salvar o evento. Tente novamente.';
+      this.errorMessage.set(message);
     } finally {
       this.isSubmitting.set(false);
     }
@@ -238,10 +236,9 @@ export class EventFormPage {
 
     const editing = this.editingGift();
     if (editing) {
-      const sortOrder = this.gifts().findIndex((g) => g.id === editing.id);
-      await firstValueFrom(this.giftService.update(editing.id, eventId, input, sortOrder));
+      await firstValueFrom(this.giftService.update(editing.id, input));
     } else {
-      await firstValueFrom(this.giftService.create(eventId, input, this.gifts().length));
+      await firstValueFrom(this.giftService.create(eventId, input));
     }
 
     this.showGiftForm.set(false);
@@ -255,20 +252,7 @@ export class EventFormPage {
   }
 
   async moveGift(gift: Gift, direction: -1 | 1): Promise<void> {
-    const eventId = this.eventId();
-    if (!eventId) return;
-
-    const list = [...this.gifts()];
-    const index = list.findIndex((g) => g.id === gift.id);
-    const targetIndex = index + direction;
-    if (targetIndex < 0 || targetIndex >= list.length) return;
-
-    [list[index], list[targetIndex]] = [list[targetIndex], list[index]];
-    this.gifts.set(list);
-
-    await Promise.all([
-      firstValueFrom(this.giftService.updateSortOrder(list[index].id, index)),
-      firstValueFrom(this.giftService.updateSortOrder(list[targetIndex].id, targetIndex)),
-    ]);
+    const updated = await firstValueFrom(this.giftService.move(gift.id, direction === -1 ? 'up' : 'down'));
+    this.gifts.set(updated);
   }
 }

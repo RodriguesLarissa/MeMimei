@@ -6,6 +6,12 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { sessionMiddleware } from './backend/session';
+import { authRouter } from './backend/routes/auth.routes';
+import { publicEventsRouter } from './backend/routes/public-events.routes';
+import { eventsRouter } from './backend/routes/events.routes';
+import { giftsRouter } from './backend/routes/gifts.routes';
+import { uploadsRouter } from './backend/routes/uploads.routes';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -13,16 +19,17 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ * API do MeMimei — único ponto de contato com o Supabase (o navegador nunca
+ * fala com o Supabase diretamente).
  */
+app.use(express.json());
+app.use(sessionMiddleware);
+
+app.use('/api/auth', authRouter);
+app.use('/api/public/events', publicEventsRouter);
+app.use('/api/events', eventsRouter);
+app.use('/api', giftsRouter);
+app.use('/api/uploads', uploadsRouter);
 
 /**
  * Serve static files from /browser

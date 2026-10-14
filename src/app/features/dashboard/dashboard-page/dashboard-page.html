@@ -2,7 +2,7 @@
   <div class="dashboard__header">
     <div>
       <h1>Meus eventos</h1>
-      <p>Olá, {{ authService.currentUser()?.user_metadata?.['display_name'] || authService.currentUser()?.email }}!</p>
+      <p>Olá, {{ authService.currentUser()?.displayName || authService.currentUser()?.email }}!</p>
     </div>
     <ui-button variant="primary" routerLink="/painel/eventos/novo">Criar novo evento</ui-button>
   </div>
