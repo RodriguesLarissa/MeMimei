@@ -44,6 +44,6 @@
   </div>
 
   @if (selectedGift(); as gift) {
-    <app-gift-detail-dialog [gift]="gift" (close)="closeDialog()" />
+    <app-gift-detail-dialog [gift]="gift" [eventId]="currentEvent.id" (close)="closeDialog()" />
   }
 }

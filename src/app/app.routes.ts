@@ -54,6 +54,13 @@ export const routes: Routes = [
       import('./features/dashboard/event-form-page/event-form-page').then((m) => m.EventFormPage),
   },
   {
+    path: 'painel/eventos/:id/contribuicoes',
+    title: 'MeMimei — Contribuições',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/dashboard/contributions-page/contributions-page').then((m) => m.ContributionsPage),
+  },
+  {
     path: 'termos',
     title: 'MeMimei — Termos de uso',
     loadComponent: () => import('./features/legal/terms-page/terms-page').then((m) => m.TermsPage),

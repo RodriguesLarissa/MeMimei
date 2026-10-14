@@ -12,11 +12,17 @@ import { publicEventsRouter } from './backend/routes/public-events.routes';
 import { eventsRouter } from './backend/routes/events.routes';
 import { giftsRouter } from './backend/routes/gifts.routes';
 import { uploadsRouter } from './backend/routes/uploads.routes';
+import { ownerContributionsRouter, publicContributionsRouter } from './backend/routes/contributions.routes';
+import { webhooksRouter } from './backend/routes/webhooks.routes';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+// Atrás do proxy HTTPS do Render (ou similar) — necessário pro cookie de
+// sessão "secure" funcionar corretamente em produção.
+app.set('trust proxy', 1);
 
 /**
  * API do MeMimei — único ponto de contato com o Supabase (o navegador nunca
@@ -27,9 +33,12 @@ app.use(sessionMiddleware);
 
 app.use('/api/auth', authRouter);
 app.use('/api/public/events', publicEventsRouter);
+app.use('/api/public/contributions', publicContributionsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api', giftsRouter);
+app.use('/api', ownerContributionsRouter);
 app.use('/api/uploads', uploadsRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 /**
  * Serve static files from /browser

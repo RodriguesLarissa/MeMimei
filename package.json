@@ -23,6 +23,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "express": "^5.1.0",
     "express-session": "^1.19.0",
+    "mercadopago": "^3.6.1",
     "multer": "^2.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

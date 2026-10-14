@@ -2,22 +2,106 @@
   <div class="gift-dialog" role="dialog" aria-modal="true" [attr.aria-label]="gift().name" (click)="$event.stopPropagation()">
     <button type="button" class="gift-dialog__close" (click)="close.emit()" aria-label="Fechar">✕</button>
 
-    @if (gift().imageUrl) {
-      <img [src]="gift().imageUrl" [alt]="gift().name" />
+    @if (step() === 'form' || step() === 'summary') {
+      @if (gift().imageUrl) {
+        <img [src]="gift().imageUrl" [alt]="gift().name" />
+      }
+      <h2>{{ gift().name }}</h2>
+      @if (gift().description) {
+        <p class="gift-dialog__description">{{ gift().description }}</p>
+      }
     }
 
-    <h2>{{ gift().name }}</h2>
-    <p class="gift-dialog__description">{{ gift().description }}</p>
+    @if (step() === 'form') {
+      <form [formGroup]="form" (ngSubmit)="goToSummary()" class="gift-dialog__form">
+        <label class="gift-dialog__field">
+          <span>Valor da contribuição (R$)</span>
+          <input type="number" min="1" step="0.01" formControlName="amount" placeholder="Ex: 150" />
+          @if (form.controls.amount.touched && form.controls.amount.invalid) {
+            <span class="gift-dialog__error">Informe um valor maior que zero.</span>
+          }
+        </label>
 
-    @if (gift().suggestedAmount !== null) {
-      <p class="gift-dialog__amount">Valor sugerido: R$ {{ gift().suggestedAmount }}</p>
+        <label class="gift-dialog__field">
+          <span>Seu nome (opcional)</span>
+          <input type="text" formControlName="guestName" placeholder="Como quer ser identificado" />
+        </label>
+
+        <label class="gift-dialog__field">
+          <span>Mensagem para quem vai receber (opcional)</span>
+          <textarea formControlName="guestMessage" rows="2" placeholder="Deixe um carinho..."></textarea>
+        </label>
+
+        <ui-button type="submit" variant="primary" [fullWidth]="true">Continuar</ui-button>
+      </form>
     }
 
-    <div class="gift-dialog__notice">
-      <strong>Em breve:</strong> o fluxo de contribuição e pagamento via Pix chega na próxima etapa do MeMimei.
-      Por enquanto, esta é só uma prévia de como será a experiência.
-    </div>
+    @if (step() === 'summary') {
+      <div class="gift-dialog__summary">
+        <p class="gift-dialog__summary-row">
+          <span>Contribuindo para</span>
+          <strong>{{ gift().name }}</strong>
+        </p>
+        <p class="gift-dialog__summary-row">
+          <span>Valor</span>
+          <strong>R$ {{ form.value.amount }}</strong>
+        </p>
+        @if (form.value.guestName) {
+          <p class="gift-dialog__summary-row">
+            <span>Seu nome</span>
+            <strong>{{ form.value.guestName }}</strong>
+          </p>
+        }
+        @if (form.value.guestMessage) {
+          <p class="gift-dialog__summary-message">"{{ form.value.guestMessage }}"</p>
+        }
+      </div>
 
-    <ui-button variant="primary" [fullWidth]="true" (click)="close.emit()">Entendi</ui-button>
+      @if (errorMessage()) {
+        <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
+      }
+
+      <div class="gift-dialog__actions">
+        <ui-button variant="primary" [fullWidth]="true" [loading]="isSubmitting()" (click)="confirmAndPay()">
+          Gerar Pix
+        </ui-button>
+        <ui-button variant="ghost" [fullWidth]="true" (click)="backToForm()">Voltar</ui-button>
+      </div>
+    }
+
+    @if (step() === 'payment') {
+      <h2>Pague com Pix</h2>
+      <p class="gift-dialog__description">
+        Abra o app do seu banco, escolha pagar com Pix e escaneie o código abaixo, ou use o copia-e-cola.
+      </p>
+
+      @if (qrCodeBase64()) {
+        <img class="gift-dialog__qr" [src]="'data:image/png;base64,' + qrCodeBase64()" alt="QR code Pix" />
+      }
+
+      <ui-button variant="secondary" [fullWidth]="true" (click)="copyPixCode()">
+        {{ copied() ? 'Código copiado!' : 'Copiar código Pix' }}
+      </ui-button>
+
+      <div class="gift-dialog__notice">
+        <strong>Aguardando confirmação...</strong> assim que o pagamento cair, esta tela atualiza sozinha.
+      </div>
+    }
+
+    @if (step() === 'success') {
+      <div class="gift-dialog__success">
+        <span class="gift-dialog__success-icon" aria-hidden="true">💛</span>
+        <h2>Contribuição confirmada!</h2>
+        <p>Obrigada por fazer parte disso. Seu carinho já chegou.</p>
+      </div>
+      <ui-button variant="primary" [fullWidth]="true" (click)="close.emit()">Fechar</ui-button>
+    }
+
+    @if (step() === 'failed') {
+      <ui-alert variant="error">
+        Não conseguimos confirmar esse pagamento. Se você já pagou, aguarde mais um pouco ou tente novamente.
+      </ui-alert>
+      <ui-button variant="primary" [fullWidth]="true" (click)="tryAgain()">Tentar novamente</ui-button>
+    }
   </div>
 </div>

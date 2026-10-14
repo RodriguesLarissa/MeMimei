@@ -3,6 +3,12 @@
 
   <h1>{{ isEditMode() ? 'Editar evento' : 'Criar novo evento' }}</h1>
 
+  @if (isEditMode()) {
+    <a [routerLink]="['/painel/eventos', eventId(), 'contribuicoes']" class="event-form__contributions-link">
+      Ver contribuições →
+    </a>
+  }
+
   @if (loading()) {
     <ui-loading-spinner label="Carregando evento..." />
   } @else {

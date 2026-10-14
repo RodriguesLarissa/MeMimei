@@ -16,6 +16,14 @@
   align-self: flex-start;
 }
 
+.event-form__contributions-link {
+  font-size: var(--fs-sm);
+  color: var(--color-terracota-dark);
+  font-weight: 700;
+  align-self: flex-start;
+  margin-top: calc(var(--space-sm) * -1);
+}
+
 .event-form__form {
   display: flex;
   flex-direction: column;
