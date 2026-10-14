@@ -1,0 +1,42 @@
+<section class="dashboard container">
+  <div class="dashboard__header">
+    <div>
+      <h1>Meus eventos</h1>
+      <p>Olá, {{ authService.currentUser()?.user_metadata?.['display_name'] || authService.currentUser()?.email }}!</p>
+    </div>
+    <ui-button variant="primary" routerLink="/painel/eventos/novo">Criar novo evento</ui-button>
+  </div>
+
+  @if (loading()) {
+    <ui-loading-spinner label="Carregando seus eventos..." />
+  } @else if (events().length === 0) {
+    <ui-empty-state
+      icon="🎉"
+      title="Você ainda não tem eventos"
+      description="Crie seu primeiro evento para começar a montar sua lista de presentes."
+    />
+  } @else {
+    <div class="dashboard__grid">
+      @for (event of events(); track event.id) {
+        <ui-card class="dashboard__event">
+          <div class="dashboard__event-header">
+            <h3>{{ event.name }}</h3>
+            @if (event.isPublished) {
+              <ui-badge tone="sage">Publicado</ui-badge>
+            } @else {
+              <ui-badge>Rascunho</ui-badge>
+            }
+          </div>
+          <p class="dashboard__event-host">{{ event.hostNames }}</p>
+
+          <div class="dashboard__event-actions">
+            <ui-button variant="secondary" [routerLink]="['/painel/eventos', event.id]">Editar</ui-button>
+            <ui-button variant="ghost" (click)="copyPublicLink(event)">
+              {{ copiedEventId() === event.id ? 'Link copiado!' : 'Copiar link' }}
+            </ui-button>
+          </div>
+        </ui-card>
+      }
+    </div>
+  }
+</section>

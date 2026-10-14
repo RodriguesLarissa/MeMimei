@@ -47,3 +47,27 @@
     display: flex;
   }
 }
+
+.layout-header__session {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.layout-header__panel-link {
+  display: none;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+
+  &:hover {
+    color: var(--color-terracota-dark);
+  }
+}
+
+@media (min-width: 560px) {
+  .layout-header__panel-link {
+    display: inline;
+  }
+}

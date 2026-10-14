@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { UiButton } from '../../ui/button/button';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'layout-header',
@@ -8,4 +9,12 @@ import { UiButton } from '../../ui/button/button';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class LayoutHeader {}
+export class LayoutHeader {
+  private readonly router = inject(Router);
+  readonly authService = inject(AuthService);
+
+  async signOut(): Promise<void> {
+    await this.authService.signOut();
+    this.router.navigateByUrl('/');
+  }
+}

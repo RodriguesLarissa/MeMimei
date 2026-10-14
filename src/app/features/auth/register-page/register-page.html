@@ -1,0 +1,59 @@
+<section class="auth-page">
+  <div class="auth-page__card">
+    <h1>Criar conta</h1>
+    <p class="auth-page__subtitle">Crie sua conta para montar sua lista de presentes.</p>
+
+    @if (errorMessage()) {
+      <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
+    } @else if (successMessage()) {
+      <ui-alert variant="success">{{ successMessage() }}</ui-alert>
+    } @else if (!isConfigured) {
+      <ui-alert variant="info">
+        O MeMimei ainda não está conectado a um banco de dados. Essa funcionalidade estará disponível em breve.
+      </ui-alert>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-page__form">
+      <label class="auth-page__field">
+        <span>Seu nome</span>
+        <input type="text" formControlName="displayName" autocomplete="name" placeholder="Como quer ser chamado" />
+        @if (form.controls.displayName.touched && form.controls.displayName.invalid) {
+          <span class="auth-page__error">Informe seu nome.</span>
+        }
+      </label>
+
+      <label class="auth-page__field">
+        <span>E-mail</span>
+        <input type="email" formControlName="email" autocomplete="email" placeholder="voce@email.com" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="auth-page__error">Informe um e-mail válido.</span>
+        }
+      </label>
+
+      <label class="auth-page__field">
+        <span>Senha</span>
+        <input type="password" formControlName="password" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <span class="auth-page__error">A senha precisa ter pelo menos 6 caracteres.</span>
+        }
+      </label>
+
+      <label class="auth-page__field">
+        <span>Confirmar senha</span>
+        <input type="password" formControlName="confirmPassword" autocomplete="new-password" placeholder="Repita a senha" />
+        @if (form.controls.confirmPassword.touched && form.errors?.['passwordsMismatch']) {
+          <span class="auth-page__error">As senhas não coincidem.</span>
+        }
+      </label>
+
+      <ui-button type="submit" variant="primary" [fullWidth]="true" [loading]="isSubmitting()">
+        Criar conta
+      </ui-button>
+    </form>
+
+    <p class="auth-page__links">
+      <span>Já tem conta?</span>
+      <a routerLink="/entrar">Entrar</a>
+    </p>
+  </div>
+</section>

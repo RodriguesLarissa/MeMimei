@@ -1,0 +1,15 @@
+<div
+  class="ui-alert"
+  [class.ui-alert--success]="variant() === 'success'"
+  [class.ui-alert--error]="variant() === 'error'"
+  role="status"
+>
+  <span class="ui-alert__icon" aria-hidden="true">
+    @switch (variant()) {
+      @case ('success') { ✅ }
+      @case ('error') { ⚠️ }
+      @default { ℹ️ }
+    }
+  </span>
+  <div class="ui-alert__content"><ng-content /></div>
+</div>

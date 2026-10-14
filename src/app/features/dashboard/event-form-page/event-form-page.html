@@ -1,0 +1,155 @@
+<section class="event-form container container--narrow">
+  <a routerLink="/painel" class="event-form__back">← Voltar para meus eventos</a>
+
+  <h1>{{ isEditMode() ? 'Editar evento' : 'Criar novo evento' }}</h1>
+
+  @if (loading()) {
+    <ui-loading-spinner label="Carregando evento..." />
+  } @else {
+    @if (errorMessage()) {
+      <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
+    }
+    @if (successMessage()) {
+      <ui-alert variant="success">{{ successMessage() }}</ui-alert>
+    }
+
+    <ui-card>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="event-form__form">
+        <label class="event-form__field">
+          <span>Nome do evento</span>
+          <input type="text" formControlName="name" placeholder="Ex: Chá de Casa Nova da Dona Marly" />
+        </label>
+
+        <label class="event-form__field">
+          <span>Tipo de comemoração</span>
+          <select formControlName="occasionType">
+            @for (occasion of occasionTypes; track occasion.id) {
+              <option [value]="occasion.id">{{ occasion.icon }} {{ occasion.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="event-form__field">
+          <span>Nome do anfitrião ou anfitriões</span>
+          <input type="text" formControlName="hostNames" placeholder="Ex: Dona Marly" />
+        </label>
+
+        <label class="event-form__field">
+          <span>Data do evento (opcional)</span>
+          <input type="date" formControlName="eventDate" />
+        </label>
+
+        <label class="event-form__field">
+          <span>Mensagem de boas-vindas</span>
+          <textarea formControlName="welcomeMessage" rows="4" placeholder="Conte um pouco sobre o seu evento..."></textarea>
+        </label>
+
+        <label class="event-form__field">
+          <span>URL da foto de capa</span>
+          <input type="text" formControlName="coverImageUrl" placeholder="https://..." />
+        </label>
+
+        <label class="event-form__field">
+          <span>URLs da galeria de fotos (uma por linha)</span>
+          <textarea formControlName="galleryImageUrls" rows="3" placeholder="Uma URL por linha"></textarea>
+        </label>
+
+        <label class="event-form__field">
+          <span>Cor do tema</span>
+          <input type="color" formControlName="themeColor" />
+        </label>
+
+        <label class="event-form__field">
+          <span>Link da página (slug)</span>
+          <input type="text" formControlName="slug" placeholder="cha-de-casa-nova-da-dona-marly" />
+          @if (form.controls.slug.touched && form.controls.slug.invalid) {
+            <span class="event-form__error">Use apenas letras minúsculas, números e hífens.</span>
+          }
+        </label>
+
+        <label class="event-form__checkbox">
+          <input type="checkbox" formControlName="isPublished" />
+          <span>Publicar este evento (visível para os convidados)</span>
+        </label>
+
+        <ui-button type="submit" variant="primary" [loading]="isSubmitting()">
+          {{ isEditMode() ? 'Salvar alterações' : 'Criar evento' }}
+        </ui-button>
+      </form>
+    </ui-card>
+
+    @if (isEditMode()) {
+      <section class="event-form__gifts">
+        <div class="event-form__gifts-header">
+          <h2>Presentes</h2>
+          <ui-button variant="secondary" (click)="openNewGiftForm()">Adicionar presente</ui-button>
+        </div>
+
+        @if (showGiftForm()) {
+          <ui-card class="event-form__gift-card">
+            <form [formGroup]="giftForm" (ngSubmit)="submitGift()" class="event-form__form">
+              <label class="event-form__field">
+                <span>Nome do presente</span>
+                <input type="text" formControlName="name" placeholder="Ex: Jogo de panelas antiaderentes" />
+              </label>
+
+              <label class="event-form__field">
+                <span>Descrição</span>
+                <textarea formControlName="description" rows="2"></textarea>
+              </label>
+
+              <label class="event-form__field">
+                <span>URL da imagem</span>
+                <input type="text" formControlName="imageUrl" placeholder="https://..." />
+              </label>
+
+              <label class="event-form__field">
+                <span>Valor sugerido (deixe em branco para valor livre)</span>
+                <input type="number" min="0" step="0.01" formControlName="suggestedAmount" placeholder="Ex: 150" />
+              </label>
+
+              <label class="event-form__field">
+                <span>Categoria</span>
+                <select formControlName="category">
+                  @for (category of giftCategories; track category.id) {
+                    <option [value]="category.id">{{ category.icon }} {{ category.label }}</option>
+                  }
+                </select>
+              </label>
+
+              <label class="event-form__checkbox">
+                <input type="checkbox" formControlName="isPublished" />
+                <span>Publicado (visível para os convidados)</span>
+              </label>
+
+              <div class="event-form__gift-actions">
+                <ui-button type="submit" variant="primary">Salvar presente</ui-button>
+                <ui-button type="button" variant="ghost" (click)="cancelGiftForm()">Cancelar</ui-button>
+              </div>
+            </form>
+          </ui-card>
+        }
+
+        @if (loadingGifts()) {
+          <ui-loading-spinner label="Carregando presentes..." />
+        } @else if (gifts().length === 0) {
+          <ui-empty-state icon="🎁" title="Nenhum presente ainda" description="Adicione o primeiro presente da sua lista." />
+        } @else {
+          <div class="event-form__gift-list">
+            @for (gift of gifts(); track gift.id; let first = $first; let last = $last) {
+              <app-gift-row
+                [gift]="gift"
+                [isFirst]="first"
+                [isLast]="last"
+                (edit)="openEditGiftForm(gift)"
+                (delete)="deleteGift(gift)"
+                (moveUp)="moveGift(gift, -1)"
+                (moveDown)="moveGift(gift, 1)"
+              />
+            }
+          </div>
+        }
+      </section>
+    }
+  }
+</section>

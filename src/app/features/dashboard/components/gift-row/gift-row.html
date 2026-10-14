@@ -1,0 +1,34 @@
+<div class="gift-row">
+  <div class="gift-row__reorder">
+    <button type="button" (click)="moveUp.emit()" [disabled]="isFirst()" aria-label="Mover para cima">▲</button>
+    <button type="button" (click)="moveDown.emit()" [disabled]="isLast()" aria-label="Mover para baixo">▼</button>
+  </div>
+
+  @if (gift().imageUrl) {
+    <img [src]="gift().imageUrl" [alt]="gift().name" class="gift-row__image" />
+  } @else {
+    <div class="gift-row__image gift-row__image--empty" aria-hidden="true">🎁</div>
+  }
+
+  <div class="gift-row__info">
+    <div class="gift-row__title">
+      <strong>{{ gift().name }}</strong>
+      @if (!gift().isPublished) {
+        <ui-badge>Rascunho</ui-badge>
+      }
+    </div>
+    <span class="gift-row__meta">
+      {{ categoryLabel(gift().category) }}
+      @if (gift().suggestedAmount !== null) {
+        · R$ {{ gift().suggestedAmount }}
+      } @else {
+        · valor livre
+      }
+    </span>
+  </div>
+
+  <div class="gift-row__actions">
+    <ui-button variant="ghost" (click)="edit.emit()">Editar</ui-button>
+    <ui-button variant="ghost" (click)="delete.emit()">Excluir</ui-button>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.ui-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--color-sage-light);
+  color: var(--color-sage-dark);
+  font-size: var(--fs-sm);
+
+  &--success {
+    background: var(--color-sage-light);
+    color: var(--color-sage-dark);
+  }
+
+  &--error {
+    background: var(--color-terracota-light);
+    color: var(--color-danger);
+  }
+}
+
+.ui-alert__icon {
+  flex-shrink: 0;
+}
+
+.ui-alert__content {
+  flex: 1;
+}

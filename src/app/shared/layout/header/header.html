@@ -10,6 +10,16 @@
       <a routerLink="/" fragment="faq">Perguntas frequentes</a>
     </nav>
 
-    <ui-button variant="primary">Crie sua lista</ui-button>
+    @if (authService.currentUser()) {
+      <div class="layout-header__session">
+        <a routerLink="/painel" class="layout-header__panel-link">Painel</a>
+        <ui-button variant="ghost" (click)="signOut()">Sair</ui-button>
+      </div>
+    } @else {
+      <div class="layout-header__session">
+        <a routerLink="/entrar" class="layout-header__panel-link">Entrar</a>
+        <ui-button variant="primary" routerLink="/cadastro">Crie sua lista</ui-button>
+      </div>
+    }
   </div>
 </header>

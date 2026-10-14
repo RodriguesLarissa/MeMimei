@@ -1,0 +1,106 @@
+.event-form {
+  padding-block: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+  h1 {
+    font-size: var(--fs-xl);
+  }
+}
+
+.event-form__back {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+.event-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.event-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+
+  input,
+  select,
+  textarea {
+    font-family: var(--font-body);
+    font-size: var(--fs-md);
+    font-weight: 400;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-off-white);
+    min-height: 48px;
+    resize: vertical;
+
+    &:focus-visible {
+      border-color: var(--color-terracota);
+    }
+  }
+
+  input[type='color'] {
+    padding: 0.25rem;
+    width: 72px;
+  }
+}
+
+.event-form__error {
+  color: var(--color-danger);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+}
+
+.event-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+
+  input {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.event-form__gifts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.event-form__gifts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+
+  h2 {
+    font-size: var(--fs-lg);
+  }
+}
+
+.event-form__gift-card {
+  background: var(--color-terracota-light);
+}
+
+.event-form__gift-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.event-form__gift-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}

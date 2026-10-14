@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map, of, switchMap, tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MockEventService } from '../../../core/services/mock-event.service';
+import { EventRepositoryService } from '../../../core/services/event-repository.service';
 import { GiftEvent } from '../../../core/models/event.model';
 import { Gift } from '../../../core/models/gift.model';
 import { GiftCategory } from '../../../core/models/gift-category';
@@ -42,7 +42,7 @@ interface EventPageData {
 })
 export class EventPublicPage {
   private readonly route = inject(ActivatedRoute);
-  private readonly eventService = inject(MockEventService);
+  private readonly eventRepository = inject(EventRepositoryService);
 
   readonly loading = signal(true);
   readonly selectedCategory = signal<GiftCategory | 'todos'>('todos');
@@ -50,15 +50,7 @@ export class EventPublicPage {
 
   private readonly data$ = this.route.paramMap.pipe(
     tap(() => this.loading.set(true)),
-    switchMap((params) =>
-      this.eventService.getEventBySlug(params.get('slug') ?? '').pipe(
-        switchMap((event) =>
-          event
-            ? this.eventService.getGiftsByEventId(event.id).pipe(map((gifts) => ({ event, gifts })))
-            : of<EventPageData>({ event: undefined, gifts: [] }),
-        ),
-      ),
-    ),
+    switchMap((params) => this.eventRepository.getEventBySlug(params.get('slug') ?? '')),
     tap(() => this.loading.set(false)),
   );
 
