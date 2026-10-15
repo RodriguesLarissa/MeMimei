@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { supabaseAdmin } from '../supabase-admin';
-import { mercadoPagoPayment } from '../mercadopago';
 import { requireAuth } from '../middleware/require-auth';
 import { respondNotConfigured, respondPaymentsNotConfigured } from '../not-configured';
+import { buildPix } from '../pix';
 import { Contribution } from '../../app/core/models/contribution.model';
 
 export const publicContributionsRouter = Router();
@@ -17,7 +17,6 @@ interface ContributionRow {
   guest_name: string | null;
   guest_message: string | null;
   amount: number;
-  status: Contribution['status'];
   created_at: string;
   gifts?: { name: string } | { name: string }[] | null;
 }
@@ -32,7 +31,6 @@ function toContribution(row: ContributionRow): Contribution {
     guestName: row.guest_name,
     guestMessage: row.guest_message,
     amount: row.amount,
-    status: row.status,
     createdAt: row.created_at,
   };
 }
@@ -50,10 +48,6 @@ publicContributionsRouter.post('/', async (req, res) => {
     respondNotConfigured(res);
     return;
   }
-  if (!mercadoPagoPayment) {
-    respondPaymentsNotConfigured(res);
-    return;
-  }
 
   const parsed = createContributionSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -65,12 +59,23 @@ publicContributionsRouter.post('/', async (req, res) => {
 
   const { data: event } = await supabaseAdmin
     .from('events')
-    .select('id, name, is_published')
+    .select('id, name, is_published, owner_id')
     .eq('id', eventId)
     .maybeSingle();
 
   if (!event || !event.is_published) {
     res.status(404).json({ error: 'Evento não encontrado.' });
+    return;
+  }
+
+  const { data: owner } = await supabaseAdmin
+    .from('profiles')
+    .select('display_name, pix_key, pix_city')
+    .eq('id', event.owner_id)
+    .maybeSingle();
+
+  if (!owner?.pix_key || !owner?.pix_city) {
+    respondPaymentsNotConfigured(res);
     return;
   }
 
@@ -88,6 +93,19 @@ publicContributionsRouter.post('/', async (req, res) => {
     }
   }
 
+  const built = await buildPix({
+    pixKey: owner.pix_key,
+    merchantName: owner.display_name,
+    merchantCity: owner.pix_city,
+    amount,
+    infoAdicional: event.name,
+  });
+
+  if (!built) {
+    res.status(502).json({ error: 'Não foi possível gerar o Pix agora. Tente novamente em instantes.' });
+    return;
+  }
+
   const { data: contribution, error: insertError } = await supabaseAdmin
     .from('contributions')
     .insert({
@@ -96,7 +114,7 @@ publicContributionsRouter.post('/', async (req, res) => {
       guest_name: guestName,
       guest_message: guestMessage,
       amount,
-      status: 'pending',
+      pix_code: built.brCode,
     })
     .select('id')
     .single();
@@ -106,59 +124,7 @@ publicContributionsRouter.post('/', async (req, res) => {
     return;
   }
 
-  try {
-    const payment = await mercadoPagoPayment.create({
-      body: {
-        transaction_amount: amount,
-        description: `Contribuição para ${event.name} — MeMimei`,
-        payment_method_id: 'pix',
-        external_reference: contribution.id,
-        payer: { email: `convidado+${contribution.id}@memimei.app` },
-      },
-    });
-
-    const qrCode = payment.point_of_interaction?.transaction_data?.qr_code;
-    const qrCodeBase64 = payment.point_of_interaction?.transaction_data?.qr_code_base64;
-
-    if (!payment.id || !qrCode || !qrCodeBase64) {
-      throw new Error('Resposta do Mercado Pago sem os dados do Pix.');
-    }
-
-    await supabaseAdmin.from('payment_transactions').insert({
-      contribution_id: contribution.id,
-      provider: 'mercadopago',
-      provider_payment_id: String(payment.id),
-      status: payment.status ?? 'pending',
-      amount,
-      fee: payment.fee_details?.[0]?.amount ?? null,
-      raw_payload: payment,
-    });
-
-    res.status(201).json({ contributionId: contribution.id, qrCodeBase64, qrCodeText: qrCode });
-  } catch {
-    await supabaseAdmin.from('contributions').update({ status: 'cancelled' }).eq('id', contribution.id);
-    res.status(502).json({ error: 'Não foi possível gerar o Pix agora. Tente novamente em instantes.' });
-  }
-});
-
-publicContributionsRouter.get('/:id/status', async (req, res) => {
-  if (!supabaseAdmin) {
-    respondNotConfigured(res);
-    return;
-  }
-
-  const { data, error } = await supabaseAdmin
-    .from('contributions')
-    .select('status')
-    .eq('id', req.params['id'])
-    .maybeSingle();
-
-  if (error || !data) {
-    res.status(404).json({ error: 'Contribuição não encontrada.' });
-    return;
-  }
-
-  res.json({ status: data.status });
+  res.status(201).json({ contributionId: contribution.id, qrCodeBase64: built.qrCodeBase64, qrCodeText: built.brCode });
 });
 
 ownerContributionsRouter.get('/events/:eventId/contributions', async (req, res) => {

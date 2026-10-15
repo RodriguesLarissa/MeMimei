@@ -23,16 +23,16 @@
   flex-direction: column;
   gap: var(--space-sm);
 
-  img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-  }
-
   h2 {
     font-size: var(--fs-lg);
   }
+}
+
+.gift-dialog__photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-md);
 }
 
 .gift-dialog__close {

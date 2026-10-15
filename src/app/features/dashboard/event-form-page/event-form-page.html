@@ -114,7 +114,7 @@
 
               <label class="event-form__field">
                 <span>Valor sugerido (deixe em branco para valor livre)</span>
-                <input type="number" min="0" step="0.01" formControlName="suggestedAmount" placeholder="Ex: 150" />
+                <input type="text" inputmode="decimal" appMoneyMask formControlName="suggestedAmount" placeholder="R$ 150,00" />
               </label>
 
               <label class="event-form__field">
@@ -147,8 +147,12 @@
                 <span>Publicado (visível para os convidados)</span>
               </label>
 
+              @if (giftErrorMessage()) {
+                <ui-alert variant="error">{{ giftErrorMessage() }}</ui-alert>
+              }
+
               <div class="event-form__gift-actions">
-                <ui-button type="submit" variant="primary">Salvar presente</ui-button>
+                <ui-button type="submit" variant="primary" [loading]="isSubmittingGift()">Salvar presente</ui-button>
                 <ui-button type="button" variant="ghost" (click)="cancelGiftForm()">Cancelar</ui-button>
               </div>
             </form>

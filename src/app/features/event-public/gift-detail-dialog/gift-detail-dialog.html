@@ -4,7 +4,7 @@
 
     @if (step() === 'form' || step() === 'summary') {
       @if (gift().imageUrl) {
-        <img [src]="gift().imageUrl" [alt]="gift().name" />
+        <img class="gift-dialog__photo" [src]="gift().imageUrl" [alt]="gift().name" />
       }
       <h2>{{ gift().name }}</h2>
       @if (gift().description) {
@@ -88,25 +88,18 @@
         {{ copied() ? 'Código copiado!' : 'Copiar código Pix' }}
       </ui-button>
 
-      <div class="gift-dialog__notice">
-        <strong>Aguardando confirmação...</strong> assim que o pagamento cair, esta tela atualiza sozinha.
-      </div>
+      <div class="gift-dialog__notice">Depois de pagar, é só fechar esta janela — obrigada por fazer parte disso!</div>
+
+      <ui-button variant="primary" [fullWidth]="true" (click)="finish()">Já fiz o Pix</ui-button>
     }
 
     @if (step() === 'success') {
       <div class="gift-dialog__success">
         <span class="gift-dialog__success-icon" aria-hidden="true">💛</span>
-        <h2>Contribuição confirmada!</h2>
-        <p>Obrigada por fazer parte disso. Seu carinho já chegou.</p>
+        <h2>Muito obrigada!</h2>
+        <p>Seu carinho significa muito.</p>
       </div>
       <ui-button variant="primary" [fullWidth]="true" (click)="close.emit()">Fechar</ui-button>
-    }
-
-    @if (step() === 'failed') {
-      <ui-alert variant="error">
-        Não conseguimos confirmar esse pagamento. Se você já pagou, aguarde mais um pouco ou tente novamente.
-      </ui-alert>
-      <ui-button variant="primary" [fullWidth]="true" (click)="tryAgain()">Tentar novamente</ui-button>
     }
   </div>
 </div>

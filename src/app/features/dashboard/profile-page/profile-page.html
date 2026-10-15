@@ -1,0 +1,54 @@
+<section class="profile-page container container--narrow">
+  <a routerLink="/painel" class="profile-page__back">← Voltar para meus eventos</a>
+
+  <h1>Minha chave Pix</h1>
+  <p class="profile-page__intro">
+    As contribuições dos seus convidados vão direto para essa chave — o MeMimei nunca guarda nem repassa esse
+    dinheiro.
+  </p>
+
+  @if (loading()) {
+    <ui-loading-spinner label="Carregando seu perfil..." />
+  } @else {
+    @if (errorMessage()) {
+      <ui-alert variant="error">{{ errorMessage() }}</ui-alert>
+    }
+    @if (successMessage()) {
+      <ui-alert variant="success">{{ successMessage() }}</ui-alert>
+    }
+
+    <ui-card>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="profile-page__form">
+        <label class="profile-page__field">
+          <span>Seu nome (aparece pra quem escanear o QR code)</span>
+          <input type="text" formControlName="displayName" placeholder="Ex: Marly Oliveira" />
+        </label>
+
+        <label class="profile-page__field">
+          <span>Tipo da chave Pix</span>
+          <select formControlName="pixKeyType">
+            <option value="" disabled>Selecione o tipo</option>
+            @for (type of pixKeyTypes; track type.id) {
+              <option [value]="type.id">{{ type.label }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="profile-page__field">
+          <span>Chave Pix</span>
+          <input type="text" formControlName="pixKey" placeholder="Digite a chave exatamente como está no seu banco" />
+        </label>
+
+        <label class="profile-page__field">
+          <span>Cidade (como está registrada no seu banco)</span>
+          <input type="text" formControlName="pixCity" placeholder="Ex: Sao Paulo" maxlength="15" />
+          @if (form.controls.pixCity.touched && form.controls.pixCity.invalid) {
+            <span class="profile-page__error">Informe a cidade (até 15 caracteres).</span>
+          }
+        </label>
+
+        <ui-button type="submit" variant="primary" [loading]="isSubmitting()">Salvar</ui-button>
+      </form>
+    </ui-card>
+  }
+</section>

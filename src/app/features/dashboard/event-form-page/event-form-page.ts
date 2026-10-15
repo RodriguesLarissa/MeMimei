@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { EventService } from '../../../core/services/event.service';
@@ -17,6 +17,7 @@ import { UiEmptyState } from '../../../shared/ui/empty-state/empty-state';
 import { GiftRow } from '../components/gift-row/gift-row';
 import { ImageUpload } from '../../../shared/ui/image-upload/image-upload';
 import { GalleryUpload } from '../../../shared/ui/gallery-upload/gallery-upload';
+import { MoneyMaskDirective } from '../../../shared/directives/money-mask.directive';
 
 @Component({
   selector: 'app-event-form-page',
@@ -31,6 +32,7 @@ import { GalleryUpload } from '../../../shared/ui/gallery-upload/gallery-upload'
     GiftRow,
     ImageUpload,
     GalleryUpload,
+    MoneyMaskDirective,
   ],
   templateUrl: './event-form-page.html',
   styleUrl: './event-form-page.scss',
@@ -61,6 +63,8 @@ export class EventFormPage {
   readonly editingGift = signal<Gift | null>(null);
   readonly showGiftForm = signal(false);
   readonly giftImageUrl = signal('');
+  readonly giftErrorMessage = signal<string | null>(null);
+  readonly isSubmittingGift = signal(false);
 
   readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -76,7 +80,7 @@ export class EventFormPage {
   readonly giftForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     description: [''],
-    suggestedAmount: [''],
+    suggestedAmount: new FormControl<number | null>(null),
     category: ['livre' as Gift['category'], Validators.required],
     allowsFreeContribution: [true],
     isPublished: [true],
@@ -185,10 +189,11 @@ export class EventFormPage {
   openNewGiftForm(): void {
     this.editingGift.set(null);
     this.giftImageUrl.set('');
+    this.giftErrorMessage.set(null);
     this.giftForm.reset({
       name: '',
       description: '',
-      suggestedAmount: '',
+      suggestedAmount: null,
       category: 'livre',
       allowsFreeContribution: true,
       isPublished: true,
@@ -200,10 +205,11 @@ export class EventFormPage {
   openEditGiftForm(gift: Gift): void {
     this.editingGift.set(gift);
     this.giftImageUrl.set(gift.imageUrl);
+    this.giftErrorMessage.set(null);
     this.giftForm.setValue({
       name: gift.name,
       description: gift.description,
-      suggestedAmount: gift.suggestedAmount === null ? '' : String(gift.suggestedAmount),
+      suggestedAmount: gift.suggestedAmount,
       category: gift.category,
       allowsFreeContribution: gift.allowsFreeContribution,
       isPublished: gift.isPublished,
@@ -226,28 +232,41 @@ export class EventFormPage {
     const eventId = this.eventId();
     if (!eventId) return;
 
+    this.isSubmittingGift.set(true);
+    this.giftErrorMessage.set(null);
+
     const raw = this.giftForm.getRawValue();
     const input = {
       name: raw.name,
       description: raw.description,
       imageUrl: this.giftImageUrl(),
-      suggestedAmount: raw.suggestedAmount.trim() === '' ? null : Number(raw.suggestedAmount),
+      suggestedAmount: raw.suggestedAmount,
       category: raw.category,
       isPublished: raw.isPublished,
       allowsFreeContribution: raw.allowsFreeContribution,
       purchaseUrl: raw.purchaseUrl.trim() === '' ? null : raw.purchaseUrl.trim(),
     };
 
-    const editing = this.editingGift();
-    if (editing) {
-      await firstValueFrom(this.giftService.update(editing.id, input));
-    } else {
-      await firstValueFrom(this.giftService.create(eventId, input));
-    }
+    try {
+      const editing = this.editingGift();
+      if (editing) {
+        await firstValueFrom(this.giftService.update(editing.id, input));
+      } else {
+        await firstValueFrom(this.giftService.create(eventId, input));
+      }
 
-    this.showGiftForm.set(false);
-    this.editingGift.set(null);
-    await this.loadGifts(eventId);
+      this.showGiftForm.set(false);
+      this.editingGift.set(null);
+      await this.loadGifts(eventId);
+    } catch (error) {
+      const message =
+        error instanceof HttpErrorResponse && typeof error.error?.error === 'string'
+          ? error.error.error
+          : 'Não foi possível salvar o presente. Tente novamente.';
+      this.giftErrorMessage.set(message);
+    } finally {
+      this.isSubmittingGift.set(false);
+    }
   }
 
   async deleteGift(gift: Gift): Promise<void> {

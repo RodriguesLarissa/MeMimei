@@ -5,13 +5,12 @@ import { catchError, of, tap } from 'rxjs';
 import { ContributionService } from '../../../core/services/contribution.service';
 import { Contribution } from '../../../core/models/contribution.model';
 import { UiCard } from '../../../shared/ui/card/card';
-import { UiBadge } from '../../../shared/ui/badge/badge';
 import { UiEmptyState } from '../../../shared/ui/empty-state/empty-state';
 import { UiLoadingSpinner } from '../../../shared/ui/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-contributions-page',
-  imports: [RouterLink, UiCard, UiBadge, UiEmptyState, UiLoadingSpinner],
+  imports: [RouterLink, UiCard, UiEmptyState, UiLoadingSpinner],
   templateUrl: './contributions-page.html',
   styleUrl: './contributions-page.scss',
 })
@@ -33,11 +32,5 @@ export class ContributionsPage {
     { initialValue: [] as Contribution[] },
   );
 
-  readonly confirmed = computed(() => this.contributions().filter((c) => c.status === 'confirmed'));
-  readonly pending = computed(() => this.contributions().filter((c) => c.status === 'pending'));
-  readonly others = computed(() =>
-    this.contributions().filter((c) => c.status === 'cancelled' || c.status === 'expired'),
-  );
-
-  readonly totalConfirmed = computed(() => this.confirmed().reduce((sum, c) => sum + c.amount, 0));
+  readonly total = computed(() => this.contributions().reduce((sum, c) => sum + c.amount, 0));
 }

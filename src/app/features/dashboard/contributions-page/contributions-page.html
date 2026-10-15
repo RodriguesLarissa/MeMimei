@@ -7,8 +7,14 @@
     <ui-loading-spinner label="Carregando contribuições..." />
   } @else {
     <ui-card class="contributions__total">
-      <span>Total confirmado</span>
-      <strong>R$ {{ totalConfirmed() }}</strong>
+      <div class="contributions__total-row">
+        <span>Total registrado</span>
+        <strong>R$ {{ total() }}</strong>
+      </div>
+      <p class="contributions__total-hint">
+        Valores informados pelos próprios convidados — confira o extrato da sua chave Pix para confirmar o que já
+        caiu de verdade.
+      </p>
     </ui-card>
 
     @if (contributions().length === 0) {
@@ -18,62 +24,22 @@
         description="Assim que alguém contribuir, ela aparece aqui."
       />
     } @else {
-      @if (confirmed().length > 0) {
-        <section class="contributions__group">
-          <h2>Confirmadas</h2>
-          @for (contribution of confirmed(); track contribution.id) {
-            <ui-card class="contributions__item">
-              <div class="contributions__item-main">
-                <strong>{{ contribution.giftName || 'Contribuição livre' }}</strong>
-                <span class="contributions__item-guest">{{ contribution.guestName || 'Anônimo' }}</span>
-                @if (contribution.guestMessage) {
-                  <p class="contributions__item-message">"{{ contribution.guestMessage }}"</p>
-                }
-              </div>
-              <div class="contributions__item-side">
-                <ui-badge tone="sage">Confirmada</ui-badge>
-                <strong>R$ {{ contribution.amount }}</strong>
-              </div>
-            </ui-card>
-          }
-        </section>
-      }
-
-      @if (pending().length > 0) {
-        <section class="contributions__group">
-          <h2>Pendentes</h2>
-          @for (contribution of pending(); track contribution.id) {
-            <ui-card class="contributions__item">
-              <div class="contributions__item-main">
-                <strong>{{ contribution.giftName || 'Contribuição livre' }}</strong>
-                <span class="contributions__item-guest">{{ contribution.guestName || 'Anônimo' }}</span>
-              </div>
-              <div class="contributions__item-side">
-                <ui-badge>Pendente</ui-badge>
-                <strong>R$ {{ contribution.amount }}</strong>
-              </div>
-            </ui-card>
-          }
-        </section>
-      }
-
-      @if (others().length > 0) {
-        <section class="contributions__group">
-          <h2>Não concluídas</h2>
-          @for (contribution of others(); track contribution.id) {
-            <ui-card class="contributions__item">
-              <div class="contributions__item-main">
-                <strong>{{ contribution.giftName || 'Contribuição livre' }}</strong>
-                <span class="contributions__item-guest">{{ contribution.guestName || 'Anônimo' }}</span>
-              </div>
-              <div class="contributions__item-side">
-                <ui-badge>{{ contribution.status === 'expired' ? 'Expirada' : 'Cancelada' }}</ui-badge>
-                <strong>R$ {{ contribution.amount }}</strong>
-              </div>
-            </ui-card>
-          }
-        </section>
-      }
+      <section class="contributions__group">
+        @for (contribution of contributions(); track contribution.id) {
+          <ui-card class="contributions__item">
+            <div class="contributions__item-main">
+              <strong>{{ contribution.giftName || 'Contribuição livre' }}</strong>
+              <span class="contributions__item-guest">{{ contribution.guestName || 'Anônimo' }}</span>
+              @if (contribution.guestMessage) {
+                <p class="contributions__item-message">"{{ contribution.guestMessage }}"</p>
+              }
+            </div>
+            <div class="contributions__item-side">
+              <strong>R$ {{ contribution.amount }}</strong>
+            </div>
+          </ui-card>
+        }
+      </section>
     }
   }
 </section>

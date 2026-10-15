@@ -13,7 +13,7 @@ import { eventsRouter } from './backend/routes/events.routes';
 import { giftsRouter } from './backend/routes/gifts.routes';
 import { uploadsRouter } from './backend/routes/uploads.routes';
 import { ownerContributionsRouter, publicContributionsRouter } from './backend/routes/contributions.routes';
-import { webhooksRouter } from './backend/routes/webhooks.routes';
+import { profileRouter } from './backend/routes/profile.routes';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -38,7 +38,7 @@ app.use('/api/events', eventsRouter);
 app.use('/api', giftsRouter);
 app.use('/api', ownerContributionsRouter);
 app.use('/api/uploads', uploadsRouter);
-app.use('/api/webhooks', webhooksRouter);
+app.use('/api/profile', profileRouter);
 
 /**
  * Serve static files from /browser

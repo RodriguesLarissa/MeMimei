@@ -40,6 +40,12 @@ export const routes: Routes = [
     loadComponent: () => import('./features/dashboard/dashboard-page/dashboard-page').then((m) => m.DashboardPage),
   },
   {
+    path: 'painel/perfil',
+    title: 'MeMimei — Minha chave Pix',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/dashboard/profile-page/profile-page').then((m) => m.ProfilePage),
+  },
+  {
     path: 'painel/eventos/novo',
     title: 'MeMimei — Criar evento',
     canActivate: [authGuard],

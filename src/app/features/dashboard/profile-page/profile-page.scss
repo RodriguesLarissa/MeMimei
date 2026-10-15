@@ -1,0 +1,59 @@
+.profile-page {
+  padding-block: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+  h1 {
+    font-size: var(--fs-xl);
+  }
+}
+
+.profile-page__back {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+.profile-page__intro {
+  color: var(--color-ink-soft);
+  margin-top: calc(var(--space-sm) * -1);
+}
+
+.profile-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.profile-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-ink);
+
+  input,
+  select {
+    font-family: var(--font-body);
+    font-size: var(--fs-md);
+    font-weight: 400;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-off-white);
+    min-height: 48px;
+
+    &:focus-visible {
+      border-color: var(--color-terracota);
+    }
+  }
+}
+
+.profile-page__error {
+  color: var(--color-danger);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+}

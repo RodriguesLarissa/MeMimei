@@ -4,7 +4,10 @@
       <h1>Meus eventos</h1>
       <p>Olá, {{ authService.currentUser()?.displayName || authService.currentUser()?.email }}!</p>
     </div>
-    <ui-button variant="primary" routerLink="/painel/eventos/novo">Criar novo evento</ui-button>
+    <div class="dashboard__header-actions">
+      <ui-button variant="secondary" routerLink="/painel/perfil">Minha chave Pix</ui-button>
+      <ui-button variant="primary" routerLink="/painel/eventos/novo">Criar novo evento</ui-button>
+    </div>
   </div>
 
   @if (loading()) {

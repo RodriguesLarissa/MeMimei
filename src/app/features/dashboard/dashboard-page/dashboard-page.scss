@@ -22,6 +22,12 @@
   }
 }
 
+.dashboard__header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
 .dashboard__grid {
   display: grid;
   gap: var(--space-md);

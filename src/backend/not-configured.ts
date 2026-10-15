@@ -7,8 +7,7 @@ export function respondNotConfigured(res: Response): void {
   res.status(503).json({ error: NOT_CONFIGURED_MESSAGE, configured: false });
 }
 
-const PAYMENTS_NOT_CONFIGURED_MESSAGE =
-  'As contribuições ainda não estão disponíveis — o MeMimei está sendo preparado para receber pagamentos.';
+const PAYMENTS_NOT_CONFIGURED_MESSAGE = 'O anfitrião ainda não cadastrou uma chave Pix para receber contribuições.';
 
 export function respondPaymentsNotConfigured(res: Response): void {
   res.status(503).json({ error: PAYMENTS_NOT_CONFIGURED_MESSAGE, configured: false });

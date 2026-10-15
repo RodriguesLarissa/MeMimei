@@ -1,5 +1,3 @@
-export type ContributionStatus = 'pending' | 'confirmed' | 'cancelled' | 'expired';
-
 export interface Contribution {
   id: string;
   eventId: string;
@@ -8,7 +6,6 @@ export interface Contribution {
   guestName: string | null;
   guestMessage: string | null;
   amount: number;
-  status: ContributionStatus;
   createdAt: string;
 }
 
